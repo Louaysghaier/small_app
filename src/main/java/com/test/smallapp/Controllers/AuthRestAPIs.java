@@ -7,7 +7,7 @@ import com.test.smallapp.JWT.JwtProvider;
 import com.test.smallapp.JWT.JwtResponse;
 import com.test.smallapp.Reposotories.RoleRepository;
 import com.test.smallapp.Reposotories.UserRepository;
-import com.test.smallapp.ServiceIMP.UserService;
+import com.test.smallapp.ServiceIMP.UserServiceIMP;
 import com.test.smallapp.Services.MailSenderService;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class AuthRestAPIs {
     @Autowired
     RoleRepository roleRepository;
     @Autowired
-    UserService userService;
+    UserServiceIMP userServiceIMP;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -57,18 +57,18 @@ public class AuthRestAPIs {
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
 
     }
-    @RequestMapping(value = "/signup/employee", method = RequestMethod.POST)
-    public ResponseEntity<User> registerUser(@Validated @RequestBody User user1) {
-       return userService.registerUser(user1);
+    @RequestMapping(value = "/signup/employee/{roleName}", method = RequestMethod.POST)
+    public ResponseEntity<User> registerUser(@Validated @RequestBody User user1,@PathVariable ("roleName")String roleName) {
+       return userServiceIMP.registerUser(user1,  roleName);
     }
 
         @RequestMapping(value = "/signup/entreprise", method = RequestMethod.POST)
         public ResponseEntity<User> registerEntreprise(@Validated @RequestBody User user1){
-          return userService.registerEntreprise(user1);
+          return userServiceIMP.registerEntreprise(user1);
     }
     @RequestMapping(value = "/signupadmin", method = RequestMethod.POST)
     public ResponseEntity<User> registerAdmin(@Valid @RequestBody User user)  {
-        return userService.registerAdmin(user);
+        return userServiceIMP.registerAdmin(user);
     }
 }
 

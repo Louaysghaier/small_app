@@ -22,7 +22,7 @@ import java.util.*;
 
 @Service
 public class
-UserService implements UserServiceInterface {
+UserServiceIMP implements UserServiceInterface {
 
     @Autowired
     UserRepository userRepository;
@@ -104,7 +104,7 @@ UserService implements UserServiceInterface {
         }
     }
 
-    public ResponseEntity<User> registerUser(User user1) {
+    public ResponseEntity<User> registerUser(User user1, String roleName) {
         if (userRepository.existsByUsername(user1.getUsername())) {
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
@@ -113,7 +113,7 @@ UserService implements UserServiceInterface {
         }
         User user = new User(user1.getName(), user1.getUsername(), user1.getEmail(), passwordEncoder.encode(user1.getPassword()), false, user1.getAddress(), false);
         Set<Role> roles = new HashSet<>();
-        Role userRole = roleRepository.findByName(RoleName.ROLE_Employee)
+        Role userRole = roleRepository.findByName(RoleName.valueOf(roleName.trim()))
                 .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
         roles.add(userRole);
         user.setRoles(roles);

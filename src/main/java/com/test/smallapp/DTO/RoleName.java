@@ -10,8 +10,9 @@ public enum RoleName {
 
     ROLE_Manager,
     ROLE_HR,
-    ROLE_Sales_CRM,
+    ROLE_CRM,
     ROLE_Consult,
+    ROLE_PM,
 
 
 }
